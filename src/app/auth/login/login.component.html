@@ -1,0 +1,72 @@
+<div class="body">
+<div class="container d-flex justify-content-center align-items-center vh-100"> 
+  <div class="login-card p-4">
+    <div class="d-flex justify-content-center mb-3">
+      <img src="assets/images/spain.jpg" alt="Spanish" class="flag-icon me-2" (click)="changeLanguage('es')" />
+      <img src="assets/images/english.jpg" alt="English" class="flag-icon" (click)="changeLanguage('en')"/>
+    </div>
+    <div class="text-center mb-3">      
+      <img src="assets/images/logo-abbott.png" alt="Ekored Logo" class="logo" />
+    </div>
+    <form [formGroup]="form"> 
+      <h5 class="text-center mb-4">{{ 'SIGN_IN' | translate }}</h5>
+      <div class="d-flex justify-content-center align-items-center" *ngIf="isLoading">
+        <div class="spinner-border text-primary" role="status">
+          <span >😕</span>
+        </div> &nbsp;
+        <span >Loading..</span>
+      </div>
+      <div class="form-group mb-3">
+        <input type="text" class="form-control" placeholder="{{ 'NumeroDocumento' | translate }}" formControlName="username"  />
+      </div>
+      <div class="form-group mb-3">
+        <input type="password" class="form-control" placeholder="{{ 'PASSWORD' | translate }}" formControlName="password" />
+      </div>
+      <div class="d-flex justify-content-end mb-4"><i class="bi bi-file-lock2"></i>
+        <a routerLink="/auth/RecuperarCuenta" class="forgot-password">{{ 'FORGOT_PASSWORD' | translate }}</a>
+      </div>
+      <div class="form-group mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <canvas id="captchaCanvas" width="200" height="50"></canvas>
+          <button type="button" class="btn btn-link p-0" (click)="refreshCaptcha()">{{ 'RefrescarCaptcha' | translate }}</button>
+        </div>
+        <input type="text" class="form-control" placeholder="{{ 'IngreseCaptcha' | translate }}" formControlName="captcha" />
+        <span *ngIf="form.get('captcha')?.invalid && form.get('captcha')?.touched" class="text-danger">
+          {{ 'CampoRequerido' | translate }}
+        </span>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="!form.valid" (click)="login()">{{ 'LOGIN' | translate }}</button>
+    </form>
+    </div>
+</div>
+</div>
+<div class="modal" id="terminos-condiciones" #modal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="terminos-header">{{ 'ProteccionDatos' | translate }}</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="cerrarModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: justify;">
+          <p style="text-align: justify;" id="terminos-content">{{ 'leyEstatutaria' | translate }}
+     </p> 
+  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="cerrarModal()" id="btn-cerrar-modal">Aceptar</button>
+        <button type="button" class="btn btn-danger" (click)="cerrarModal()" id="btn-cerrar-modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div  class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+          <span >Loading..</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+<div class="container">
+    <h3>Cliente</h3>
+  
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+      <!-- Filas de Dos Controles -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="tipoDocumento">{{ 'Tipo de Documento' | translate }}</label>
+          <select formControlName="tipoDocumento" class="form-control">
+            <option value="" disabled selected>Seleccionar...</option>
+            <option *ngFor="let tipo of ListaTipoDocumentos" [value]="tipo.id">{{ tipo.nombre }}</option>
+          </select>
+          <span *ngIf="formulario.get('tipoDocumento')?.invalid && formulario.get('tipoDocumento')?.touched" class="text-danger">
+            Este campo es requerido.
+          </span>
+        </div>
+  
+        <div class="col-md-6 mb-3">
+          <label for="numeroDocumento">{{ 'Número de Documento' | translate }}</label>
+          <input id="numeroDocumento" type="number" formControlName="numeroDocumento" class="form-control" style="appearance: none; -moz-appearance: textfield; -webkit-appearance: none;" />
+          <span *ngIf="formulario.get('numeroDocumento')?.invalid && formulario.get('numeroDocumento')?.touched" class="text-danger">
+            Este campo es requerido.
+          </span>
+          <span *ngIf="formulario.get('numeroDocumento')?.hasError('pattern') && formulario.get('numeroDocumento')?.touched" class="text-danger">
+            Solo se permiten números.
+          </span>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="nombres">{{ 'Nombres' | translate }}</label>
+          <input id="nombres" type="text" formControlName="nombres" class="form-control" maxlength="30" />
+          <span *ngIf="formulario.get('nombres')?.invalid && formulario.get('nombres')?.touched" class="text-danger">
+            Este campo es requerido.
+          </span>
+        </div>
+  
+        <div class="col-md-6 mb-3">
+          <label for="Apellido1">Primer Apellido</label>
+          <input id="Apellido1" type="text" formControlName="Apellido1" class="form-control" maxlength="30" />
+          <span *ngIf="formulario.get('Apellido1')?.invalid && formulario.get('Apellido1')?.touched" class="text-danger">
+            Este campo es requerido.
+          </span>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="Apellido2">Segundo Apellido</label>
+          <input id="Apellido2" type="text" formControlName="Apellido2" class="form-control" maxlength="30"/>
+        </div>
+  
+        <div class="col-md-6 mb-3">
+          <label for="genero">{{ 'Género' | translate }}</label>
+          <select formControlName="genero" class="form-control">
+            <option value="" disabled selected>Seleccionar...</option>
+            <option *ngFor="let genero of generos" [value]="genero.value">{{ genero.label }}</option>
+          </select>
+          <span *ngIf="formulario.get('genero')?.invalid && formulario.get('genero')?.touched" class="text-danger">
+            Este campo es requerido.
+          </span>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="fechaNacimiento">{{ 'Fecha de Nacimiento' | translate }}</label>
+          <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" class="form-control" />
+          <span *ngIf="formulario.get('fechaNacimiento')?.invalid && formulario.get('fechaNacimiento')?.touched" class="text-danger">
+            Este campo es requerido.
+          </span>
+        </div>
+  
+        <div class="col-md-6 mb-3">
+          <label for="email">{{ 'Correo Electrónico' | translate }}</label>
+          <input id="email" type="email" formControlName="email" class="form-control" />
+          <span *ngIf="formulario.get('email')?.invalid && formulario.get('email')?.touched" class="text-danger">
+            Este campo es requerido.
+          </span>
+        </div>
+      </div>
+  
+      <!-- Direcciones -->
+      <div formArrayName="direcciones" class="mb-3">
+        <h5>Direcciones</h5>
+        <div *ngFor="let direccion of direcciones.controls; let i = index" [formGroupName]="i" class="border p-3 mb-2">
+          <div class="mb-3">
+            <label for="direccion">Dirección</label>
+            <input id="direccion" type="text" formControlName="direccion" class="form-control" />
+            <span *ngIf="direccion.get('direccion')?.invalid && direccion.get('direccion')?.touched" class="text-danger">
+                Este campo es requerido.
+            </span>
+          </div>
+  
+          <div class="mb-3">
+            <label for="tipoDireccion">Tipo de Dirección</label>
+            <input id="tipoDireccion" type="text" formControlName="tipo" class="form-control" />
+          </div>
+  
+          <button *ngIf="direcciones.length > 1" type="button" class="btn btn-danger" (click)="eliminarDireccion(i)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="agregarDireccion()">
+        Agregar Dirección
+        </button>
+      </div>
+  
+      <!-- Teléfonos -->
+      <div formArrayName="telefonos" class="mb-3">
+        <h5>Teléfonos</h5>
+        <div *ngFor="let telefono of telefonos.controls; let i = index" [formGroupName]="i" class="border p-3 mb-2">
+          <div class="mb-3">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" type="text" formControlName="telefono" class="form-control"  maxlength="10"/>
+            <span *ngIf="telefono.get('telefono')?.invalid && telefono.get('telefono')?.touched" class="text-danger">
+                Este campo es requerido.
+            </span>
+            <span *ngIf="formulario.get('telefono')?.hasError('pattern') && formulario.get('telefono')?.touched" class="text-danger">
+                Solo se permiten números.
+              </span>
+          </div>
+  
+          <div class="mb-3">
+            <label for="tipoTelefono">{{ 'Tipo de Teléfono' | translate }}</label>
+            <input id="tipoTelefono" type="text" formControlName="tipo" class="form-control" />
+          </div>
+  
+          <button *ngIf="telefonos.length > 1" type="button" class="btn btn-danger" (click)="eliminarTelefono(i)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="agregarTelefono()">
+         Agregar Teléfono
+        </button>
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-success">
+        Guardar
+      </button>
+    </form>
+  </div>
+  
